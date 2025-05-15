@@ -22,11 +22,11 @@ class DigestHandler:
                 hasFile = File.file_exists(full_path)
                 if not hasFile: return
 
-                relative_path = os.path.relpath(full_path, start=self.directory)
+                relative_path = os.path.relpath(full_path, start=self.directory).replace(os.sep, "/")
+
                 is_ignored = gitignore_validation.is_ignored(relative_path)
 
-
-                print(relative_path, is_ignored)
+                if not is_ignored: print(relative_path, is_ignored)
 
 
                 

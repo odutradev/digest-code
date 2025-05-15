@@ -2,3 +2,6 @@
 
 # dotenv loader
 python-dotenv==1.0.0
+
+#gitignore loader
+pathspec>=0.11.1
