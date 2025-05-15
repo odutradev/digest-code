@@ -1,5 +1,6 @@
 import sys;
 import os;
+
 from resources.digest_handler import DigestHandler
 
 class InputHandler:
