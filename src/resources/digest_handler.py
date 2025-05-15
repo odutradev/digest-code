@@ -1,4 +1,5 @@
 from src.utils.config import DIRECTORY, NUM_FILES
+from src.resources.gitignore import Gitignore
 
 class DigestHandler:
     def __init__(self, num_files, directory):
@@ -7,6 +8,11 @@ class DigestHandler:
 
     def start(self):
         print(f"Processing up to {self.num_files} files in {self.directory}")
+
+        gitignoreValidation = Gitignore(self.directory)
+        gitignoreValidation.read_gitignore()
+
+        
 
 if __name__ == "__main__":
     handler = DigestHandler(NUM_FILES, DIRECTORY)
