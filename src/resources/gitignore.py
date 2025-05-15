@@ -10,16 +10,19 @@ class Gitignore:
     def read_gitignore(self) -> list[str]:
         gitignore_path = os.path.join(self.path, '.gitignore')
 
+        patterns = []
+
         if File.file_exists(gitignore_path):
             content = File.read_file(gitignore_path)
-            lines = content.splitlines()
-            self.spec = pathspec.PathSpec.from_lines('gitwildmatch', lines)
+            patterns = content.splitlines()
 
-        self.spec = pathspec.PathSpec.from_lines(
-            'gitwildmatch',
-            list(self.spec.patterns) + ['.git']
-        )
+        patterns += [
+            '.git',
+            '**/__pycache__/',
+            '**/node_modules/',
+        ]
 
+        self.spec = pathspec.PathSpec.from_lines('gitwildmatch', patterns)
         return [p.pattern for p in self.spec.patterns]
 
     def is_ignored(self, target: str) -> bool:
