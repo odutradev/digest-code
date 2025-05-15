@@ -1,5 +1,8 @@
+import os 
+
 from src.utils.config import DIRECTORY, NUM_FILES
 from src.resources.gitignore import Gitignore
+from src.utils.file import File
 
 class DigestHandler:
     def __init__(self, num_files, directory):
@@ -12,7 +15,13 @@ class DigestHandler:
         gitignoreValidation = Gitignore(self.directory)
         gitignoreValidation.read_gitignore()
 
-        
+        for root, _, files in os.walk(self.directory):
+            for file in files:
+                full_path = os.path.join(root, file)
+                hasFile = File.file_exists(full_path)
+                print(full_path, hasFile)
+
+
 
 if __name__ == "__main__":
     handler = DigestHandler(NUM_FILES, DIRECTORY)

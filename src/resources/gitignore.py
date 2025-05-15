@@ -1,22 +1,30 @@
+import os
 from src.utils.file import File
 
-import os
-
 class Gitignore:
-
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
-        self.list = []
+        self.patterns: list[str] = []
+
     def read_gitignore(self) -> list[str]:
         gitignore_path = os.path.join(self.path, '.gitignore')
 
-        if not File.file_exists(gitignore_path):
-            return []
+        if File.file_exists(gitignore_path):
+            content = File.read_file(gitignore_path)
+            lines = content.splitlines()
+            self.patterns = [
+                line.strip()
+                for line in lines
+                if line.strip() and not line.startswith('#')
+            ]
 
-        content = File.read_file(gitignore_path)
-        lines = content.splitlines()
+        if ".git" not in self.patterns:
+            self.patterns.append(".git")
 
-        self.lines = [line.strip() for line in lines if line.strip() and not line.startswith('#')]
+        return self.patterns
 
     def is_ignored(self, target: str) -> bool:
-        return any(target == pattern or target.startswith(pattern.rstrip('/')) for pattern in self.list)
+        return any(
+            target == pattern or target.startswith(pattern.rstrip('/'))
+            for pattern in self.patterns
+        )
