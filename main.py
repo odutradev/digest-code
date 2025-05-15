@@ -1,7 +1,7 @@
 import sys;
 import os;
 
-from resources.digest_handler import DigestHandler
+from src.resources.digest_handler import DigestHandler
 
 class InputHandler:
     def __init__(self):
@@ -9,11 +9,11 @@ class InputHandler:
         self.numFiles = 0
 
     def prompt(self):
-        self.directory = input("Enter project directory: ").strip()
         try:
+            self.directory = input("Enter project directory: ").strip()
             self.numFiles = int(input("Enter number of files to process: ").strip())
-        except ValueError:
-            print("Invalid number of files")
+        except:
+            print("\nError in data capture")
             sys.exit(1)
         self.validate()
 
