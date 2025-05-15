@@ -4,12 +4,22 @@ from src.utils.config import DIRECTORY, NUM_FILES
 from src.resources.gitignore import Gitignore
 from src.utils.file import File
 
+TEXT_EXTENSIONS = {
+    ".txt", ".md", ".py", ".js", ".jsx", ".ts", ".tsx",
+    ".json", ".html", ".css", ".xml", ".yml", ".yaml",
+    ".csv", ".ini", ".env", ".cfg"
+}
+
 class DigestHandler:
     def __init__(self, num_files, directory):
         self.released_files: list[dict[str, str]] = []
         self.directory = directory
         self.num_files = num_files
         self.finish_text = ""
+
+    def is_text_file(self, file_path: str) -> bool:
+        _, ext = os.path.splitext(file_path)
+        return ext.lower() in TEXT_EXTENSIONS
 
     def start(self):
         print(f"Processing up to {self.num_files} files in {self.directory}")
@@ -30,6 +40,9 @@ class DigestHandler:
                 if not File.file_exists(full_path):
                     continue
 
+                if not self.is_text_file(full_path):
+                    continue
+
                 relative_path = os.path.relpath(full_path, start=self.directory).replace(os.sep, "/")
                 is_ignored = gitignore_validation.is_ignored(relative_path)
 
@@ -48,10 +61,14 @@ class DigestHandler:
             file_content = File.read_file(item["full_path"])
             self.finish_text += f"STARTOFFILE {path}\n\n{file_content}\n\nENDOFFILE {path}\n\n"
 
-        result_dir = os.path.join(self.directory, "result")
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+        result_dir = os.path.join(project_root, "result")
         os.makedirs(result_dir, exist_ok=True)
 
-        output_path = os.path.join(result_dir, "output.txt")
+        base_name = os.path.basename(os.path.normpath(self.directory))
+        output_filename = f"{base_name}.txt"
+        output_path = os.path.join(result_dir, output_filename)
+
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(self.finish_text)
 

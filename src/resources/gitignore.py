@@ -20,6 +20,7 @@ class Gitignore:
             '.git',
             '**/__pycache__/',
             '**/node_modules/',
+            'package-lock.json'
         ]
 
         self.spec = pathspec.PathSpec.from_lines('gitwildmatch', patterns)
