@@ -1,1 +1,3 @@
 # requirements.txt
+
+colorlog==6.7.0
