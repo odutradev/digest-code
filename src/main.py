@@ -1,5 +1,6 @@
 import sys;
 import os;
+from resources.digest_handler import DigestHandler
 
 class InputHandler:
     def __init__(self):
@@ -26,4 +27,6 @@ class InputHandler:
 if __name__ == "__main__":
     handler = InputHandler()
     handler.prompt()
-    print(f"Processing up to {handler.numFiles} files in {handler.directory}")
+    digest = DigestHandler(handler.numFiles, handler.directory)
+    digest.start()
+
