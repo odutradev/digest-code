@@ -6,9 +6,10 @@ from src.utils.file import File
 
 class DigestHandler:
     def __init__(self, num_files, directory):
+        self.released_files: list[dict[str, str]] = []
         self.directory = directory
         self.num_files = num_files
-        self.released_files: list[dict[str, str]] = []
+        self.finish_text = ""
 
     def start(self):
         print(f"Processing up to {self.num_files} files in {self.directory}")
@@ -38,8 +39,23 @@ class DigestHandler:
                         "full_path": full_path
                     })
 
+        self.create_file()
+
+    def create_file(self):
         for item in self.released_files:
-            print(item)
+            path = item["relative_path"]
+            print(f"Performing file processing: {path}")
+            file_content = File.read_file(item["full_path"])
+            self.finish_text += f"STARTOFFILE {path}\n\n{file_content}\n\nENDOFFILE {path}\n\n"
+
+        result_dir = os.path.join(self.directory, "result")
+        os.makedirs(result_dir, exist_ok=True)
+
+        output_path = os.path.join(result_dir, "output.txt")
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(self.finish_text)
+
+        print(f"Arquivo gerado em: {output_path}")
 
 if __name__ == "__main__":
     handler = DigestHandler(NUM_FILES, DIRECTORY)
