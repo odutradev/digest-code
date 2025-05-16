@@ -11,10 +11,9 @@ TEXT_EXTENSIONS = {
 }
 
 class DigestHandler:
-    def __init__(self, num_files, directory):
+    def __init__(self, directory):
         self.released_files: list[dict[str, str]] = []
         self.directory = directory
-        self.num_files = num_files
         self.finish_text = ""
 
     def is_text_file(self, file_path: str) -> bool:
@@ -75,6 +74,5 @@ class DigestHandler:
         print(f"Arquivo gerado em: {output_path}")
 
 if __name__ == "__main__":
-    handler = DigestHandler(NUM_FILES, DIRECTORY)
-    print(NUM_FILES, DIRECTORY)
+    handler = DigestHandler(DIRECTORY)
     handler.start()
