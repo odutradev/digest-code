@@ -1,11 +1,12 @@
-import os
-from src.utils.file import File
 import pathspec
+import os
+
+from src.utils.file import File
 
 class Gitignore:
     def __init__(self, path: str):
-        self.path = path
         self.spec = pathspec.PathSpec.from_lines('gitwildmatch', [])
+        self.path = path
 
     def read_gitignore(self) -> list[str]:
         gitignore_path = os.path.join(self.path, '.gitignore')

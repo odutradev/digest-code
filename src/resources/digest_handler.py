@@ -1,13 +1,13 @@
 import os
 
-from src.utils.config import DIRECTORY, NUM_FILES
 from src.resources.gitignore import Gitignore
+from src.utils.config import DIRECTORY
 from src.utils.file import File
 
 TEXT_EXTENSIONS = {
     ".txt", ".md", ".py", ".js", ".jsx", ".ts", ".tsx",
     ".json", ".html", ".css", ".xml", ".yml", ".yaml",
-    ".csv", ".ini", ".env", ".cfg"
+    ".csv", ".ini", ".env", ".cfg", ".example"
 }
 
 class DigestHandler:
