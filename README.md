@@ -1,173 +1,121 @@
 # Digest Code
 
-A simple Python tool to extract every text-based file from a project and bundle its contents into a single `.txt` for AI review and analysis.
+A simple Python tool to extract every text-based file from a project and bundle its contents into a single .txt for AI review and analysis.
 
----
-
-## Table of Contents
-
-- [Features](#features)  
-- [Prerequisites](#prerequisites)  
-- [Installation](#installation)  
-- [Configuration](#configuration)  
-- [Usage](#usage)  
-- [Project Structure](#project-structure)  
-- [Example Output](#example-output)  
-- [Customization](#customization)  
-- [Contributing](#contributing)  
-- [License](#license)  
-
----
-
-## Features
-
-- **Recursive scan** of project directories  
-- **Filtering** by common text extensions (`.py`, `.js`, `.md`, etc.)  
-- Honors `.gitignore` (plus default ignores like `node_modules/` and `__pycache__/`)  
-- **Limit** number of files processed (configurable)  
-- Preserves **relative paths** inside output blocks  
-- Generates a single aggregate file with `STARTOFFILE` / `ENDOFFILE` delimiters  
-
----
-
-## Prerequisites
-
-- Python 3.8 or higher  
-- pip  
-
----
-
-## Installation
-
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/odutradev/digest-code.git
-   cd digest-code
+**Repository:** [https://github.com/odutradev/digest-code](https://github.com/odutradev/digest-code)
+**Creator & Main Contributor:** [João Dutra (@odutradev)](https://github.com/odutradev)
 
 
-2. **Install dependencies**
+## 🚀 Key Features
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+* **Recursive directory scan** for all text-based files
+* **Respects `.gitignore`** plus default ignore patterns (e.g., `__pycache__/`, `node_modules/`)
+* **Filters** by common text extensions: `.py`, `.js`, `.md`, `.json`, `.env`, etc.
+* **Interactive prompt** to enter project directory
+* **Aggregated output** with `STARTOFFILE <path>` / `ENDOFFILE <path>` blocks
+* **Single output file** named after the project root, saved in the `result/` folder
 
----
 
-## Configuration
-
-Create a `.env` file in the project root (next to `requirements.txt`) to set defaults:
-
-```dotenv
-# .env
-DIRECTORY=/path/to/your/project
-NUM_FILES=50
-```
-
-* `DIRECTORY`: default root folder to scan
-* `NUM_FILES`: maximum number of files to include
-
-If you omit the `.env` file, the defaults are:
-
-* `NUM_FILES`: 10
-* `DIRECTORY`: (empty – prompts at runtime)
-
----
-
-## Usage
-
-You can run interactively or rely on `.env` defaults:
+## 💾 Installation
 
 ```bash
-# Interactive prompt
-python main.py
+# Clone the repository
+git clone https://github.com/odutradev/digest-code.git
+cd digest-code
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-You will be asked:
 
-1. **Enter project directory**
-2. **Enter number of files to process**
+## 🎬 Usage
 
-Once confirmed, the tool will:
+For development, run the main module:
 
-* Walk your directory tree
-* Filter out non-text files and ignored paths
-* Collect up to `NUM_FILES` text files
-* Write all contents into `./result/<project_name>.txt`
+```bash
+python -m main
+```
 
----
+Follow the on-screen prompt to enter your project directory. The script will:
 
-## Project Structure
+1. Recursively scan the specified directory.
+2. Filter out non-text files and apply ignore rules.
+3. Wrap each file's content in `STARTOFFILE <relative_path>` / `ENDOFFILE <relative_path>` blocks.
+4. Save the aggregated output to:
+
+```
+result/<project_folder_name>.txt
+```
+
+
+## 📂 Project Structure
 
 ```
 .
-├── main.py
-├── README.md
-├── requirements.txt
-├── .env.example
+├── main.py              # Entry point and input handler
+├── .env.example         # Example environment file (optional)
+├── requirements.txt     # Python dependencies
 └── src
     ├── resources
-    │   ├── digest_handler.py   # core logic
-    │   └── gitignore.py        # .gitignore parsing
+    │   ├── digest_handler.py  # Core scanning and bundling logic
+    │   └── gitignore.py       # .gitignore parser and default ignore patterns
     └── utils
-        ├── config.py           # loads .env
-        └── file.py             # file read/existence helpers
+        ├── config.py         # Loads DIRECTORY from .env for development
+        └── file.py           # Helpers for file existence and reading
 ```
 
----
 
-## Example Output
+## 🔍 Example Output
 
 After running:
 
 ```bash
-python -m main.py
+python -m main
 ```
 
-You’ll find:
+The `result/` folder will contain:
 
 ```
 result/
 └── my-project.txt
 ```
 
-Its contents look like:
+Inside `my-project.txt`:
 
-```
+```text
 STARTOFFILE src/app.py
 
-<file contents here>
+<file contents>
 
 ENDOFFILE src/app.py
 
 STARTOFFILE src/utils/helper.py
 
-<file contents here>
+<file contents>
 
 ENDOFFILE src/utils/helper.py
 ...
 ```
 
----
 
-## Customization
+## 🛠️ Customization
 
-* **Extensions**: Modify `TEXT_EXTENSIONS` in `src/resources/digest_handler.py`
-* **Ignore patterns**: Add defaults in `src/resources/gitignore.py`
-* **Output folder**: Change `result` path in `DigestHandler.create_file()`
+* **Extensions**: Update the `TEXT_EXTENSIONS` set in `src/resources/digest_handler.py`
+* **Ignore patterns**: Modify default patterns in `src/resources/gitignore.py`
+* **Output folder**: Change the `result_dir` path in `DigestHandler.create_file()`
 
----
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/YourFeature`
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/YourFeature`
 3. Commit your changes: `git commit -m "feat: Add YourFeature"`
 4. Push to your branch: `git push origin feature/YourFeature`
 5. Open a Pull Request
 
----
+Please read [CONTRIBUTING.md](https://github.com/odutradev/digest-code/blob/master/CONTRIBUTING.md) for contribution guidelines.
 
-## License
 
-This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
+## 📜 License
 
+This project is licensed under the **MIT License**. See [LICENSE](https://github.com/odutradev/digest-code/blob/master/LICENSE) for details.

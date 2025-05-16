@@ -21,7 +21,7 @@ class DigestHandler:
         return ext.lower() in TEXT_EXTENSIONS
 
     def start(self):
-        print(f"Processing up to {self.num_files} files in {self.directory}")
+        print(f"Processing files from directory {self.directory}")
 
         gitignore_validation = Gitignore(self.directory)
         gitignore_validation.read_gitignore()
