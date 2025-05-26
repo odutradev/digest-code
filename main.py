@@ -1,5 +1,5 @@
-import sys;
-import os;
+import sys
+import os
 
 from src.resources.digest_handler import DigestHandler
 
@@ -8,11 +8,16 @@ class InputHandler:
         self.directory = ""
 
     def prompt(self):
-        try:
-            self.directory = input("Enter project directory: ").strip()
-        except:
-            print("\nError in data capture")
-            sys.exit(1)
+        if len(sys.argv) > 1:
+            self.directory = sys.argv[1].strip()
+            print(f"Usando diretório: {self.directory}")
+        else:
+            try:
+                self.directory = input("Enter project directory: ").strip()
+            except:
+                print("\nError in data capture")
+                sys.exit(1)
+        
         self.validate()
 
     def validate(self):
@@ -26,4 +31,3 @@ if __name__ == "__main__":
     handler.prompt()
     digest = DigestHandler(handler.directory)
     digest.start()
-
